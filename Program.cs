@@ -4,6 +4,13 @@ namespace Hello_World
 {
     class Program
     {
+        struct Monster
+        {
+            public string name;
+            public float health;
+            public float damage;
+        }
+
         // Player stats
         static string name = "None";
         static string role = "None";
@@ -11,6 +18,7 @@ namespace Hello_World
         static float stamina = -1;
         static float strength = -1;
         static int level = -1;
+
 
         /// <summary>
         /// Prints the player stats to the console
@@ -24,6 +32,20 @@ namespace Hello_World
             Console.WriteLine("Stamina:  " + stamina);
             Console.WriteLine("Strength: " + strength);
             Console.WriteLine("Level:    " + level);
+            Console.WriteLine();
+        }
+
+        /// <summary>
+        /// Prints the monster's stats to the console
+        /// </summary>
+        /// <param name="monster">Monster to print</param>
+        static void PrintMonsterStats(Monster monster)
+        {
+            Console.WriteLine();
+            Console.WriteLine("Name:   " + monster.name);
+            Console.WriteLine("Health: " + monster.health);
+            Console.WriteLine("Damage: " + monster.damage);
+            Console.WriteLine();
         }
 
         /// <summary>
@@ -77,19 +99,15 @@ namespace Hello_World
             Console.WriteLine();
         }
 
-        static void GoblinFight()
+        static void Fight(Monster enemy)
         {
-            // Goblin
-            float goblinHealth = 10;
-            float goblinStamina = 5;
-
             // Goblin fight
-            while (health > 0 && goblinHealth > 0)
+            while (health > 0 && enemy.health > 0)
             {
                 Console.Clear();
 
                 Console.WriteLine();
-                Console.WriteLine("A wild Goblin appears!");
+                Console.WriteLine("A wild " + enemy.name + " appears!");
 
                 // Add a line to separate rounds of combat
                 Console.WriteLine("-----------------------------------");
@@ -97,10 +115,8 @@ namespace Hello_World
                 // Print player stats
                 PrintPlayerStats();
 
-                // Print goblin stats
-                Console.WriteLine();
-                Console.WriteLine("Goblin Health:   " + goblinHealth);
-                Console.WriteLine("Goblin Stamina:  " + goblinStamina);
+                // Print enemy stats
+                PrintMonsterStats(enemy);
 
                 string input = "";
                 // Ask the player to Attack or Run
@@ -110,12 +126,12 @@ namespace Hello_World
                 if (input == "Attack")
                 {
                     // Damage the goblin
-                    goblinHealth = goblinHealth - 5;
+                    enemy.health = enemy.health - 5;
 
                     // Lower player stamina
                     stamina = stamina - 5;
 
-                    Console.WriteLine("You did 5 damage to the Goblin!");
+                    Console.WriteLine("You did 5 damage to " + enemy.name);
                 }
                 else if (input == "Run")
                 {
@@ -133,9 +149,9 @@ namespace Hello_World
 
                 // Damage the player
                 health = health - 5;
-                Console.WriteLine("The Goblin did 5 damage");
+                Console.WriteLine(enemy.name + " did 5 damage");
 
-                if (goblinHealth <= 0)
+                if (enemy.health <= 0)
                 {
                     Console.WriteLine("You win!");
                 }
@@ -148,9 +164,18 @@ namespace Hello_World
             }
         }
 
-
         static void Main(string[] args)
         {
+
+            Monster goblin = new Monster { name = "Goblin", health = 10, damage = 5 };
+            
+            Monster troll = new Monster { name = "Troll", health = 10, damage = 5 };
+
+            Monster dragon;
+            dragon.name = "Dragon";
+            dragon.health = 50;
+            dragon.damage = 20;
+
             // Get the player name
             name = Prompt("What is your name?");
 
@@ -181,8 +206,12 @@ namespace Hello_World
             // Do goblin fight
             for (int i = 0; i < 3; i++)
             {
-                GoblinFight();
+                Fight(goblin);
             }
+
+            Fight(troll);
+            Fight(troll);
+            Fight(dragon);
             
 
             // Second fight
